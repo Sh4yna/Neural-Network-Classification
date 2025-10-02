@@ -1,0 +1,342 @@
+#Exploring Data Visualization with Matplotlib in Google Colab
+
+Welcome to this hands-on exercise on data visualization using Matplotlib in Google Colab! Matplotlib is a powerful and widely used library for creating static, animated, and interactive visualizations in Python.
+
+Upload the company_sales_data.csv given in the Github repo to your gdrive and mount your google drive for the following exercises. Read this file using Pandas or NumPy or using in-built matplotlib function.
+
+
+```python
+from matplotlib import pyplot as plt
+import numpy as np
+import pandas as pd
+```
+
+Exercise 1: Read Total profit of all months and show it using a line plot
+Total profit data provided for each month. Generated line plot must include the following properties: –
+
+Line Style dotted and Line-color should be red  
+Show legend at the lower right location.  
+X label name = Month Number  
+Y label name = Profit in dollar  
+Add a circle marker.  
+Line marker color as read  
+Line width should be 3  
+
+
+```python
+df = pd.read_csv('company_sales_data.csv') 
+```
+
+
+```python
+df.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>month_number</th>
+      <th>facecream</th>
+      <th>facewash</th>
+      <th>toothpaste</th>
+      <th>bathingsoap</th>
+      <th>shampoo</th>
+      <th>moisturizer</th>
+      <th>total_units</th>
+      <th>total_profit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2500</td>
+      <td>1500</td>
+      <td>5200</td>
+      <td>9200</td>
+      <td>1200</td>
+      <td>1500</td>
+      <td>21100</td>
+      <td>211000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>2630</td>
+      <td>1200</td>
+      <td>5100</td>
+      <td>6100</td>
+      <td>2100</td>
+      <td>1200</td>
+      <td>18330</td>
+      <td>183300</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>2140</td>
+      <td>1340</td>
+      <td>4550</td>
+      <td>9550</td>
+      <td>3550</td>
+      <td>1340</td>
+      <td>22470</td>
+      <td>224700</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>3400</td>
+      <td>1130</td>
+      <td>5870</td>
+      <td>8870</td>
+      <td>1870</td>
+      <td>1130</td>
+      <td>22270</td>
+      <td>222700</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>3600</td>
+      <td>1740</td>
+      <td>4560</td>
+      <td>7760</td>
+      <td>1560</td>
+      <td>1740</td>
+      <td>20960</td>
+      <td>209600</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+plt.figure(figsize=(12, 10))
+plt.xlabel('Month Number')
+plt.ylabel('Total Profit')
+plt.plot('month_number', 'total_profit',linestyle='dotted', data=df, lw=3, marker="o", color="red")
+plt.legend(["profit"], loc="lower right")
+```
+
+
+
+
+    <matplotlib.legend.Legend at 0x149bb357770>
+
+
+
+
+    
+![png](output_5_1.png)
+    
+
+
+Exercise 2: Read all product sales data and show it  using a multiline plot.
+ Display the number of units sold per month for each product using multiline plots. (i.e., Separate Plotline and different color for each product ).
+
+
+```python
+fig, ax = plt.subplots()
+for col in df.drop(['total_profit', 'month_number', 'total_units'], axis=1):
+    ax.plot('month_number', col, data=df)
+ax.legend(["facecream","facewash","toothpaste","bathingsoap", "shampoo", "moisturizer"])
+ax.set_xlabel('Month Number')
+ax.set_ylabel('Number of Units Sold')
+```
+
+
+
+
+    Text(0, 0.5, 'Number of Units Sold')
+
+
+
+
+    
+![png](output_7_1.png)
+    
+
+
+Exercise 3: Calculate total sale data for last year for each product and show it using a Pie chart  
+Note: In Pie chart display Number of units sold per year for each product in percentage.
+
+
+
+```python
+values = pd.DataFrame(df.sum()).drop(['month_number', 'total_profit', 'total_units']).reset_index()
+```
+
+
+```python
+values['number_of_units'] = values[0]
+values = values.drop(0, axis=1)
+```
+
+
+```python
+values
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>number_of_units</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>facecream</td>
+      <td>34480</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>facewash</td>
+      <td>18515</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>toothpaste</td>
+      <td>69910</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>bathingsoap</td>
+      <td>114010</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>shampoo</td>
+      <td>25410</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>moisturizer</td>
+      <td>18515</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+import plotly.express as px
+```
+
+
+```python
+plt.scatter(df['total_profit'], df['month_number'])
+```
+
+
+
+
+    <matplotlib.collections.PathCollection at 0x7f34ab3f0d60>
+
+
+
+
+    
+![png](output_13_1.png)
+    
+
+
+
+```python
+fig = plt.pie('number_of_units', labels='index', data=values, autopct='%1.1f%%', startangle=90, shadow=True, radius=2, textprops={'color':'darkblue'})
+# fig = plt.pie(values, names='index', values='number_of_units', color='index')
+# fig.show()
+```
+
+
+    
+![png](output_14_0.png)
+    
+
+
+
+```python
+ # Sample data
+labels = ['Category A', 'Category B', 'Category C', 'Category D']
+values = [25, 30, 20, 25]
+
+ # Create a pie chart using Plotly Express
+fig = px.pie(labels=labels, values=values, title='Sample Pie Chart')
+fig.show()
+```
+
+
+<div>                            <div id="f926d04d-3841-4d69-a25f-252e968f23ad" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("f926d04d-3841-4d69-a25f-252e968f23ad")) {                    Plotly.newPlot(                        "f926d04d-3841-4d69-a25f-252e968f23ad",                        [{"domain":{"x":[0.0,1.0],"y":[0.0,1.0]},"hovertemplate":"value=%{value}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","name":"","showlegend":false,"values":[25,30,20,25],"type":"pie"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"legend":{"tracegroupgap":0},"title":{"text":"Sample Pie Chart"}},                        {"responsive": true}                    ).then(function(){
+
+var gd = document.getElementById('f926d04d-3841-4d69-a25f-252e968f23ad');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+
+
+
+```python
+
+```
